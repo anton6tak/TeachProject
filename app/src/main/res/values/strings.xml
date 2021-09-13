@@ -2,4 +2,6 @@
     <string name="app_name">TeachProject</string>
     <string name="btn_music_title">Music intent</string>
     <string name="btn_share_title">Share intent</string>
+    <string name="btn_change_title">Change buttons</string>
+    <string name="btn_add_title">Add</string>
 </resources>
