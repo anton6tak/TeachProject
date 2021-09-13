@@ -5,7 +5,9 @@ import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup.MarginLayoutParams
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.teachproject.databinding.ActivityMainBinding
@@ -16,12 +18,16 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var viewBinding: ActivityMainBinding
     private lateinit var recyclerView: RecyclerView
     private lateinit var listItems: MutableList<String>
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         viewBinding = ActivityMainBinding.inflate(layoutInflater)
         val view = viewBinding.root
         setContentView(view)
+
+        val viewModel: MyViewModel by viewModels()
 
         val btnMusic = viewBinding.buttonMusic
         btnMusic.setOnClickListener(this)
@@ -35,9 +41,15 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         val btnAdd = viewBinding.buttonAdd
         btnAdd.setOnClickListener(this)
 
+        val btnNext = viewBinding.buttonNextActivity
+        btnNext.setOnClickListener(this)
+
         recyclerView = viewBinding.recyclerView
         recyclerView.layoutManager = LinearLayoutManager(this)
 
+        viewModel.getUsers().observe(this, Observer<List<String>> { users ->
+            recyclerView.adapter = MyAdapter(users)
+        })
         listItems = mutableListOf("A", "B", "C", "D", "E", "F", "J", "H")
         recyclerView.adapter = MyAdapter(listItems)
     }
@@ -90,6 +102,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                     recyclerView.adapter?.notifyDataSetChanged()
                 }
             }
+            viewBinding.buttonNextActivity.id -> {
+                startActivity(Intent(this, MvvmActivity::class.java))
+            }
+
         }
     }
 }
