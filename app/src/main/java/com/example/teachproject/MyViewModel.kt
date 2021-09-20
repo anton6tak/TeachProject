@@ -4,7 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class MyViewModel : ViewModel() {
+class MyViewModel() : ViewModel() {
+
+    private val model: MyModel = MyModel.create()
 
     private val items: MutableLiveData<List<String>> by lazy {
         MutableLiveData<List<String>>().also {
@@ -16,7 +18,7 @@ class MyViewModel : ViewModel() {
         return items
     }
 
-    private fun loadItems() {
-        //return listOf("1", "@", "3")
+    private fun loadItems(): List<String> {
+        return model.refreshData()
     }
 }
